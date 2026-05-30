@@ -3810,6 +3810,12 @@ unsafe impl<T, A: Allocator> ops::DerefPure for Vec<T, A> {}
 #[cfg(not(no_global_oom_handling))]
 #[stable(feature = "rust1", since = "1.0.0")]
 impl<T: Clone, A: Allocator + Clone> Clone for Vec<T, A> {
+    /// Creates a new `Vec` by deep-copying the contents of an existing `Vec`
+    ///
+    /// This method will allocate a new `Vec` and `clone` all of `self`'s contents
+    /// into it. The new `Vec` will be created with only enough capacity for the
+    /// length of `self`, and will disregard any additional capacity `self` might
+    /// have.
     fn clone(&self) -> Self {
         let alloc = self.allocator().clone();
         <[T]>::to_vec_in(&**self, alloc)
